@@ -1,7 +1,13 @@
 package com.greendao;
 
-import com.greendao.App;
 import com.greendao.data.models.User;
+import com.greendao.data.models.UserDao;
+
+import org.greenrobot.greendao.async.AsyncOperation;
+import org.greenrobot.greendao.async.AsyncOperationListener;
+import org.greenrobot.greendao.async.AsyncSession;
+import org.greenrobot.greendao.query.Query;
+import org.greenrobot.greendao.query.QueryBuilder;
 
 import java.util.List;
 
@@ -16,6 +22,10 @@ public class UserOpt {
 
     public static void insertUser(User user) {
         App.getDaoInstant().getUserDao().insertOrReplace(user);
+    }
+
+    public static void insertUsers(List<User> users) {
+        App.getDaoInstant().getUserDao().insertInTx(users);
     }
 
     /**
@@ -45,15 +55,44 @@ public class UserOpt {
      *
      * @return
      */
-//    public static List<User> queryUser() {
+    public static List<User> queryUser() {
 //        return App.getDaoInstant().getUserDao().queryBuilder()
 //                .where(User.Properties.Type.eq(User.TYPE_LOVE)).list();
-//    }
+        UserDao userDao = App.getDaoInstant().getUserDao();
+
+        Query<User> query = userDao
+                .queryBuilder()
+                .where(UserDao.Properties.Id.ge(4))
+                .build();
+        List<User> users = query.list();
+
+//        QueryBuilder<User> queryBuilder = userDao.queryBuilder();
+//        queryBuilder.join(User.class, UserDao.Properties.Id)
+//                .where(UserDao.Properties.Name.eq("name_10"));
+//        List<User> users = queryBuilder.list();
+
+        return users;
+    }
 
     /**
      * 查询全部数据
      */
     public static List<User> queryAll() {
         return App.getDaoInstant().getUserDao().loadAll();
+    }
+
+    public static void asncOpt() {
+        AsyncSession async = App.getDaoInstant().startAsyncSession();
+
+        //不关心操作结果时，可不设置lisnter
+        async.setListenerMainThread(new AsyncOperationListener() {
+            @Override
+            public void onAsyncOperationCompleted(AsyncOperation arg0) {
+
+
+            }
+        });
+
+//        async.queryList(builder.build());
     }
 }

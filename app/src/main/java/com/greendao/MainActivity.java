@@ -7,7 +7,9 @@ import android.view.View;
 import android.widget.Button;
 
 import com.greendao.data.models.User;
+import com.greendao.data.models.User1;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -48,9 +50,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btn_update:
                 break;
             case R.id.btn_query:
-                for (int i = 0; i < 1000; i++) {
-                    query();
-                }
+                query();
                 break;
             default:
                 break;
@@ -61,13 +61,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         new Thread(new Runnable() {
             @Override
             public void run() {
+                List<User> users = new ArrayList<>();
                 for (int i = 0; i < 10; i++) {
                     User user = new User();
-                    user.setName("test_name_" + count++);
+                    user.setName("name_" + count++);
                     user.setCountry("china");
-                    Log.e(TAG, "准备插入数据 =" + count);
-                    UserOpt.insertUser(user);
+                    Log.e(TAG, "User 准备插入数据 =" + count);
+                    users.add(user);
+//                    User1 user1 = new User1();
+//                    user1.setName("name1_" + count++);
+//                    user1.setTime(System.currentTimeMillis());
+//                    Log.e(TAG, "User1 准备插入数据 =" + count);
+//                    User1Opt.insertUser(user1);
+                    try {
+                        Thread.sleep(10);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
+                UserOpt.insertUsers(users);
             }
         }).start();
     }
@@ -84,8 +96,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         new Thread(new Runnable() {
             @Override
             public void run() {
-                List<User> list = UserOpt.queryAll();
-                Log.e(TAG, "list--->" + list.size());
+                List<User> list = UserOpt.queryUser();
+                Log.e(TAG, "list--->" + list);
             }
         }).start();
     }

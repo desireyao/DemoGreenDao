@@ -20,25 +20,21 @@ public class User {
     @Id(autoincrement = true)
     private Long id;
 
-    @Unique private String name;
+    private String name;
 
-    @Property
     private String country;
 
     private String address;
 
-    private Integer age4;
-    private Integer age5;
+    private Integer age;
 
-    @Generated(hash = 1948697694)
-    public User(Long id, String name, String country, String address, Integer age4,
-            Integer age5) {
+    @Generated(hash = 1752269300)
+    public User(Long id, String name, String country, String address, Integer age) {
         this.id = id;
         this.name = name;
         this.country = country;
         this.address = address;
-        this.age4 = age4;
-        this.age5 = age5;
+        this.age = age;
     }
 
     @Generated(hash = 586692638)
@@ -77,19 +73,22 @@ public class User {
         this.address = address;
     }
 
-    public Integer getAge4() {
-        return this.age4;
+    public Integer getAge() {
+        return this.age;
     }
 
-    public void setAge4(Integer age4) {
-        this.age4 = age4;
+    public void setAge(Integer age) {
+        this.age = age;
     }
 
-    public Integer getAge5() {
-        return this.age5;
-    }
-
-    public void setAge5(Integer age5) {
-        this.age5 = age5;
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", country='" + country + '\'' +
+                ", address='" + address + '\'' +
+                ", age=" + age +
+                '}';
     }
 }
